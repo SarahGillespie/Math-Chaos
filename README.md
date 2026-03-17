@@ -108,7 +108,7 @@ MongoDB (hosted on MongoDB Atlas)
 | Each React component in its own file | ✔ Each component in its own folder with matching CSS file |
 | Deployed on public server | ✔ [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com) |
 | 2+ Mongo collections with CRUD | ✔ `games` (Shashank — full CRUD) + `players` (Sarah — full CRUD) |
-| Database with 1,000+ records | ✔ `seed.js` generates 1,000 games + 50 players |
+| Database with 1,000+ records | ✔ `seed.js` generates 500 games + 1000 players |
 | Uses Node + Express | ✔ `backend/server.js` with Express + native `ws` WebSocket |
 | Formatted with Prettier | ✔ `npm run format` applied to both frontend and backend |
 | No non-standard tags for standard components | ✔ Proper `<button>`, `<input>`, `<nav>`, `<table>` throughout |

@@ -185,9 +185,9 @@ function generatePlayers(count) {
     if (usedNames.has(username)) continue;
     usedNames.add(username);
 
-    const wins = randomInt(0, 60);
-    const losses = randomInt(0, 60);
-    const winStreak = randomInt(0, Math.min(wins, 8));
+    const wins = randomInt(0, 10);
+    const losses = randomInt(0, 25);
+    const winStreak = randomInt(0, Math.min(wins, 10));
 
     players.push({
       username,
@@ -275,7 +275,7 @@ async function seed() {
     await db.collection("players").insertMany(players);
     console.log(`Inserted ${players.length} players`);
 
-    const games = generateGames(players, 1000);
+    const games = generateGames(players, 500);
     await db.collection("games").insertMany(games);
     console.log(`Inserted ${games.length} games`);
 
