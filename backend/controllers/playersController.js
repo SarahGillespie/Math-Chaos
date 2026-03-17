@@ -174,7 +174,7 @@ export async function deletePlayer(req, res) {
     const db = getDB();
     const result = await db
       .collection("players")
-      .deleteOne({ username: req.params.username.toLowerCase() });
+      .deleteOne({ username: req.params.username });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Player not found" });
