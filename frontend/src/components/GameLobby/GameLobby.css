@@ -1,0 +1,253 @@
+.lobby-container {
+  min-height: 100vh;
+  background-color: #f5f0e8;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.lobby-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(245, 240, 232, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 0.5px solid #c8bdb0;
+  padding: 0 2.5rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lobby-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: 10px;
+}
+
+.lobby-nav-logo img {
+  width: 56px;
+  height: 56px;
+}
+
+.lobby-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+
+.lobby-nav-back {
+  background: transparent;
+  border: 0.5px solid #c8bdb0;
+  color: #8c7b6b;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: "Space Mono", monospace;
+  transition: all 0.18s ease;
+}
+
+.lobby-nav-back:hover {
+  border-color: #1c1a17;
+  color: #1c1a17;
+}
+
+/* Body */
+.lobby-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.lobby-card {
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Status row */
+.lobby-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lobby-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c1440e;
+  animation: lobby-pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.lobby-status-dot--ready {
+  background: #4a7c59;
+  animation: none;
+}
+
+@keyframes lobby-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.lobby-status-text {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: #8c7b6b;
+}
+
+/* Title */
+.lobby-title {
+  font-family: "Space Mono", monospace;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1c1a17;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.lobby-sub {
+  font-size: 0.88rem;
+  color: #8c7b6b;
+  line-height: 1.55;
+  margin-top: 0.25rem;
+}
+
+/* Room code */
+.lobby-code-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c7b6b;
+  margin-bottom: 0.5rem;
+}
+
+.lobby-code-box {
+  background: #f5f0e8;
+  border: 0.5px solid #c8bdb0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lobby-code {
+  font-family: "Space Mono", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1a17;
+  letter-spacing: 6px;
+}
+
+.lobby-copy-btn {
+  background: transparent;
+  border: 0.5px solid #c8bdb0;
+  color: #8c7b6b;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lobby-copy-btn:hover {
+  border-color: #1c1a17;
+  color: #1c1a17;
+}
+
+.lobby-copy-btn--copied {
+  border-color: #4a7c59;
+  color: #4a7c59;
+}
+
+/* Player color indicator */
+.lobby-player-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: #f5f0e8;
+  border-radius: 8px;
+  border: 0.5px solid #d4c8ba;
+}
+
+.lobby-player-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.lobby-player-dot--red {
+  background: #c1440e;
+}
+.lobby-player-dot--blue {
+  background: #3b6ea5;
+}
+
+.lobby-player-text {
+  font-size: 0.85rem;
+  color: #8c7b6b;
+}
+
+.lobby-player-text strong {
+  color: #1c1a17;
+  font-family: "Space Mono", monospace;
+}
+
+/* Divider */
+.lobby-divider {
+  height: 0.5px;
+  background: #ede7d9;
+}
+
+/* Cancel button */
+.lobby-cancel-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 0.5px solid #c8bdb0;
+  background: transparent;
+  color: #8c7b6b;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  transition: all 0.18s ease;
+}
+
+.lobby-cancel-btn:hover {
+  border-color: #c1440e;
+  color: #c1440e;
+}
+
+/* Error */
+.lobby-error {
+  font-size: 0.8rem;
+  color: #c1440e;
+  font-family: "Space Mono", monospace;
+  text-align: center;
+}

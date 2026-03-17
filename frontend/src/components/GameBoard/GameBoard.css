@@ -1,0 +1,614 @@
+.board-container {
+  min-height: 100vh;
+  background-color: #f5f0e8;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Navbar ── */
+.board-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(245, 240, 232, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 0.5px solid #c8bdb0;
+  padding: 0 2.5rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.board-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: 10px;
+}
+
+.board-nav-logo img {
+  width: 56px;
+  height: 56px;
+}
+
+.board-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+
+.board-nav-back {
+  background: transparent;
+  border: 0.5px solid #c8bdb0;
+  color: #8c7b6b;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: "Space Mono", monospace;
+  transition: all 0.18s ease;
+}
+
+.board-nav-back:hover {
+  border-color: #1c1a17;
+  color: #1c1a17;
+}
+
+/* ── Main layout ── */
+.board-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 2.5rem;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── Center — game area ── */
+.board-game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Turn indicator */
+.board-turn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: #8c7b6b;
+}
+
+.board-turn-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.board-turn-dot--red {
+  background: #c1440e;
+}
+.board-turn-dot--blue {
+  background: #3b6ea5;
+}
+
+.board-turn-label {
+  color: #1c1a17;
+  font-weight: 700;
+}
+
+/* SVG board */
+.board-svg-wrap {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Edge hover zones */
+.board-edge-hitbox {
+  stroke: transparent;
+  stroke-width: 20;
+  fill: none;
+  cursor: pointer;
+  transition: stroke 0.12s ease;
+}
+
+.board-edge-hitbox:hover {
+  stroke: rgba(28, 26, 23, 0.06);
+}
+
+.board-edge-hitbox:disabled {
+  cursor: default;
+}
+
+/* Drawn edges */
+.board-edge-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: all 0.15s ease;
+}
+
+.board-edge-line--red {
+  stroke: #c1440e;
+}
+.board-edge-line--blue {
+  stroke: #3b6ea5;
+}
+
+/* Losing triangle highlight */
+.board-edge-line--losing {
+  stroke-width: 4;
+  opacity: 1;
+}
+
+/* Nodes */
+.board-node {
+  fill: #f5f0e8;
+  stroke: #1c1a17;
+  stroke-width: 1.5;
+  transition: all 0.15s ease;
+  cursor: default;
+}
+
+.board-node-label {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  fill: #1c1a17;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Right — sidebar ── */
+.board-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 88px;
+}
+
+/* Score card */
+.board-score-card {
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.board-score-header {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 0.5px solid #ede7d9;
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c7b6b;
+}
+
+.board-score-players {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.board-score-player {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.board-score-player:first-child {
+  border-right: 0.5px solid #ede7d9;
+}
+
+.board-score-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-bottom: 0.25rem;
+}
+
+.board-score-color--red {
+  background: #c1440e;
+}
+.board-score-color--blue {
+  background: #3b6ea5;
+}
+
+.board-score-name {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: #1c1a17;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.board-score-role {
+  font-size: 0.72rem;
+  color: #8c7b6b;
+}
+
+.board-score-active {
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  color: #c1440e;
+  font-family: "Space Mono", monospace;
+}
+
+/* Move history */
+.board-history-card {
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.board-history-header {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 0.5px solid #ede7d9;
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c7b6b;
+}
+
+.board-history-list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.board-history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.8rem;
+  color: #8c7b6b;
+  transition: background 0.12s ease;
+}
+
+.board-history-item:hover {
+  background: #f5f0e8;
+}
+
+.board-history-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.board-history-dot--red {
+  background: #c1440e;
+}
+.board-history-dot--blue {
+  background: #3b6ea5;
+}
+
+.board-history-move {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: #1c1a17;
+}
+
+.board-history-who {
+  font-size: 0.72rem;
+  color: #b0a090;
+  margin-left: auto;
+}
+
+.board-history-empty {
+  padding: 1.5rem 1.25rem;
+  font-size: 0.82rem;
+  color: #b0a090;
+  text-align: center;
+}
+
+/* ── Game Over overlay ── */
+.board-gameover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 240, 232, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 2rem;
+}
+
+.board-gameover-card {
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  padding: 2.5rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 8px 40px rgba(28, 26, 23, 0.12);
+}
+
+.board-gameover-eyebrow {
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8c7b6b;
+}
+
+.board-gameover-title {
+  font-family: "Space Mono", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1a17;
+  letter-spacing: -1px;
+}
+
+.board-gameover-sub {
+  font-size: 0.9rem;
+  color: #8c7b6b;
+  line-height: 1.5;
+}
+
+.board-gameover-triangle {
+  font-family: "Space Mono", monospace;
+  font-size: 0.78rem;
+  color: #c1440e;
+  background: rgba(193, 68, 14, 0.06);
+  border: 0.5px solid rgba(193, 68, 14, 0.2);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+.board-gameover-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.board-gameover-btn-primary {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background: #1c1a17;
+  color: #f5f0e8;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: background 0.18s ease;
+  cursor: pointer;
+}
+
+.board-gameover-btn-primary:hover {
+  background: #c1440e;
+}
+
+.board-gameover-btn-secondary {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 0.5px solid #c8bdb0;
+  background: transparent;
+  color: #8c7b6b;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.board-gameover-btn-secondary:hover {
+  border-color: #1c1a17;
+  color: #1c1a17;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .board-body {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .board-sidebar {
+    position: static;
+  }
+}
+
+/* ── Hint bar ── */
+.board-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  background: rgba(193, 68, 14, 0.05);
+  border: 0.5px solid rgba(193, 68, 14, 0.15);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: #8c7b6b;
+  max-width: 560px;
+  width: 100%;
+}
+
+.board-hint-icon {
+  font-size: 0.75rem;
+  color: #c1440e;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Game over panel ── */
+.board-gameover-panel {
+  max-width: 680px;
+  width: 100%;
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.board-gameover-panel-top {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.5px solid #ede7d9;
+  gap: 1rem;
+}
+
+.board-gameover-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.board-gameover-eyebrow {
+  font-family: "Space Mono", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c7b6b;
+}
+
+.board-gameover-title {
+  font-family: "Space Mono", monospace;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1c1a17;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.board-gameover-title--win {
+  color: #4a7c59;
+}
+.board-gameover-title--lose {
+  color: #c1440e;
+}
+
+.board-gameover-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.board-gameover-btn-primary {
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #1c1a17;
+  color: #f5f0e8;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: background 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.board-gameover-btn-primary:hover {
+  background: #c1440e;
+}
+
+.board-gameover-btn-secondary {
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  border: 0.5px solid #c8bdb0;
+  background: transparent;
+  color: #8c7b6b;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.board-gameover-btn-secondary:hover {
+  border-color: #1c1a17;
+  color: #1c1a17;
+}
+
+.board-gameover-panel-sub {
+  padding: 0.9rem 1.5rem;
+  font-size: 0.83rem;
+  color: #8c7b6b;
+  border-bottom: 0.5px solid #ede7d9;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.board-gameover-triangle {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: #c1440e;
+}
+
+/* Math concept card */
+.board-math-concept {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: #fafaf8;
+}
+
+.board-math-concept-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #b0a090;
+}
+
+.board-math-concept-title {
+  font-family: "Space Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1c1a17;
+}
+
+.board-math-concept-body {
+  font-size: 0.82rem;
+  color: #8c7b6b;
+  line-height: 1.65;
+  max-width: 580px;
+}
+
+.board-math-concept-body strong {
+  color: #1c1a17;
+}

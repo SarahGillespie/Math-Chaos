@@ -1,1 +1,5 @@
-db/users.json
+node_modules/
+.env
+dist/
+.DS_Store
+client/build

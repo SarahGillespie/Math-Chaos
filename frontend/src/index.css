@@ -1,0 +1,100 @@
+:root {
+  --bg: #f5f0e8;
+  --surface: #fff;
+  --surface-2: #ede7d9;
+  --surface-3: #e4dccf;
+  --border: #d4c8ba;
+  --border-light: #c8bdb0;
+  --text-primary: #1c1a17;
+  --text-secondary: #8c7b6b;
+  --text-dim: #b0a090;
+  --accent-red: #c1440e;
+  --accent-red-dim: rgba(193, 68, 14, 0.1);
+  --accent-blue: #3b6ea5;
+  --accent-blue-dim: rgba(59, 110, 165, 0.1);
+  --success: #4a7c59;
+  --warning: #a0722a;
+  --font-mono: "Space Mono", monospace;
+  --font-body: "DM Sans", sans-serif;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(28, 26, 23, 0.1);
+  --shadow-sm: 0 2px 8px rgba(28, 26, 23, 0.07);
+  --transition: 0.18s ease;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: #f5f0e8;
+  color: #1c1a17;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-mono);
+  line-height: 1.2;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+  border: none;
+  outline: none;
+}
+
+input {
+  font-family: var(--font-body);
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* ── Utility ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
