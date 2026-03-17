@@ -14,7 +14,16 @@ const PORT = process.env.PORT || 5000;
 
 // ── Manual CORS ──
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "*");
+  const allowedOrigins = [
+    process.env.FRONTEND_URL?.replace(/\/$/, ""),
+    "http://localhost:5173",
+  ].filter(Boolean);
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PATCH, DELETE, OPTIONS"
