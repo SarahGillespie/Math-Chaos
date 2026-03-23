@@ -11,7 +11,7 @@ export default function GameLobby({ config, onGameReady, onBack }) {
     navigator.clipboard.writeText(config.roomCode);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }
+  } 
 
   return (
     <div className="lobby-container">
