@@ -6,8 +6,8 @@
 - **Class:** CS5610 Web Development — Northeastern University
 - **Deployed:** [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)
 - **GitHub:** [github.com/SarahGillespie/Math-Chaos](https://github.com/SarahGillespie/Math-Chaos)
-- **Slides:** [Google Slides](https://docs.google.com/presentation/d/1Txg7esqugnr_ZlTYldNrhnMeOg1Ip8IKLnQMLOIpSKs/edit?usp=sharing)
-- **Video Demonstration:** [Video](https://drive.google.com/file/d/1OLcyfXCRNRElA1f9QEQIUoRMftxcuRrG/view?usp=sharing)
+- **Slides:** [Google Slides](add!)
+- **Video Demonstration:** [Video](add!)
 
 ---
 
@@ -111,34 +111,7 @@ WebSockets (ws library)
 MongoDB (hosted on MongoDB Atlas)
 
 ## Rubric Checklist
-
-| **Criteria**                                              | **Status / Link**                                                                                                                       |
-| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Design Document (description, personas, stories, mockups) | [View Design Doc](./submissions/DesignDoc.pdf)                                                                                          |
-| App accomplishes all approved requirements                | ✔ SIM game with AI mode, multiplayer, leaderboard                                                                                       |
-| App is usable and includes instructions                   | ✔ In-app rules on GameMenu + this README                                                                                                |
-| App is actually useful                                    | ✔ Mathematical strategy game demonstrating Ramsey Theory                                                                                |
-| ESLint config — no errors                                 | ✔ `npm run lint` → 0 errors in both frontend and backend                                                                                |
-| Code properly organized                                   | ✔ `backend/routes/`, `backend/controllers/`, `backend/utils/`, `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/utils/` |
-| At least 3 React components using hooks                   | ✔ GameBoard, GameMenu, GameLobby, Leaderboard, Home (6 total)                                                                           |
-| Each React component in its own file                      | ✔ Each component in its own folder with matching CSS file                                                                               |
-| Deployed on public server                                 | ✔ [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)                                                          |
-| 2+ Mongo collections with CRUD                            | ✔ `games` (Shashank — full CRUD) + `players` (Sarah — full CRUD)                                                                        |
-| Database with 1,000+ records                              | ✔ `seed.js` generates 500 games + 1000 players                                                                                          |
-| Uses Node + Express                                       | ✔ `backend/server.js` with Express + native `ws` WebSocket                                                                              |
-| Formatted with Prettier                                   | ✔ `npm run format` applied to both frontend and backend                                                                                 |
-| No non-standard tags for standard components              | ✔ Proper `<button>`, `<input>`, `<nav>`, `<table>` throughout                                                                           |
-| CSS organized by components                               | ✔ Each component has its own `.css` file loaded in its `.jsx` file                                                                      |
-| Clear descriptive README                                  | ✔ (this file)                                                                                                                           |
-| No exposed credentials                                    | ✔ `.env` gitignored, `.env.example` provided in both frontend and backend                                                               |
-| package.json for backend and frontend                     | ✔ [backend/package.json](./backend/package.json) + [frontend/package.json](./frontend/package.json)                                     |
-| MIT License                                               | ✔ [LICENSE](./LICENSE)                                                                                                                  |
-| No leftover unused code                                   | ✔ No default routes, no unused React favicon, no leftover files                                                                         |
-| Google Form submission correct                            | ✔ Thumbnail + links verified                                                                                                            |
-| Short narrated demo video                                 | [Watch Here](https://drive.google.com/file/d/1OLcyfXCRNRElA1f9QEQIUoRMftxcuRrG/view?usp=sharing)                                        |
-| Code frozen on time                                       | ✔ 24 hours before class                                                                                                                 |
-| Defines PropTypes for every React component               | ✔ All components have PropTypes defined                                                                                                 |
-| No axios, Mongoose, CORS or prohibited libraries          | ✔ Native fetch, MongoDB driver, manual CORS headers, native ws                                                                          |
+(add!)
 
 ## API Endpoints
 
@@ -180,7 +153,8 @@ MongoDB (hosted on MongoDB Atlas)
 
 ## GenAI Usage
 
-- **Model:** Claude Sonnet 4.6 (Anthropic): March 2026
+- **Model:** Claude Sonnet 4.6 (Anthropic): March and April 2026
+
 
 ---
 
