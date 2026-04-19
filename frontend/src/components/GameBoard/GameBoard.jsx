@@ -6,7 +6,6 @@ import { useAI } from "../../hooks/useAI.js";
 import { useMultiplayer } from "../../hooks/useMultiplayer.js";
 import { edgesEqual, getAllEdges } from "../../utils/edgeUtils.js";
 import { getHexNodes, findLosingTriangle } from "../../utils/gameHelpers.js";
-import { formatEdge } from "../../utils/formatters.js";
 import "./GameBoard.css";
 
 const NODE_R = 10;
@@ -455,7 +454,7 @@ export default function GameBoard({ config, onBackToMenu }) {
                       className={`board-history-dot board-history-dot--${m.color}`}
                     />
                     <span className="board-history-move">
-                      {formatEdge(m.edge)}
+                      {m.edge[0] + 1} – {m.edge[1] + 1}
                     </span>
                     <span className="board-history-who">
                       {m.username === "AI" ? "AI" : m.username}
