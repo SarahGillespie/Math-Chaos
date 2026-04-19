@@ -13,6 +13,10 @@ const SORT_OPTIONS = [
   { key: "totalGames", label: "Most Games" },
 ];
 
+function getInitials(username) {
+  return username.slice(0, 2).toUpperCase();
+}
+
 export default function Leaderboard({ onBack }) {
   const {
     players,
@@ -27,9 +31,11 @@ export default function Leaderboard({ onBack }) {
     selectPlayer,
     deleteSelected,
     deleting,
+    currentPlayer,
   } = useLeaderboard();
 
   const currentUsername = localStorage.getItem("sim_username") || "";
+  const winRate = currentPlayer ? getWinRate(currentPlayer) : 0;
 
   return (
     <div className="leaderboard-container">
@@ -70,6 +76,51 @@ export default function Leaderboard({ onBack }) {
           </button>
         </div>
 
+        {/* Your Stats card */}
+        {currentUsername && (
+          <div className="ys-card">
+            <div className="ys-header">
+              <div className="ys-avatar">
+                {getInitials(currentUsername)}
+              </div>
+              <div>
+                <p className="ys-label">your stats</p>
+                <p className="ys-username">{currentUsername}</p>
+              </div>
+            </div>
+
+            {currentPlayer ? (
+              <div className="ys-grid">
+                <div className="ys-stat">
+                  <span className="ys-val ys-val--wins">{currentPlayer.wins}</span>
+                  <span className="ys-key">wins</span>
+                </div>
+                <div className="ys-stat">
+                  <span className="ys-val ys-val--losses">{currentPlayer.losses}</span>
+                  <span className="ys-key">losses</span>
+                </div>
+                <div className="ys-stat">
+                  <span className="ys-val ys-val--streak">{currentPlayer.winStreak}</span>
+                  <span className="ys-key">streak</span>
+                </div>
+                <div className="ys-stat">
+                  <span className="ys-val">{currentPlayer.totalGames}</span>
+                  <span className="ys-key">games</span>
+                </div>
+                <div className="ys-winrate">
+                  <span className="ys-key">win rate</span>
+                  <div className="ys-bar-wrap">
+                    <div className="ys-bar-fill" style={{ width: `${winRate}%` }} />
+                  </div>
+                  <span className="ys-winrate-val">{winRate}%</span>
+                </div>
+              </div>
+            ) : (
+              <p className="ys-empty">Play a game to appear on the leaderboard!</p>
+            )}
+          </div>
+        )}
+
         {/* Sort tabs */}
         <div className="leaderboard-tabs">
           {SORT_OPTIONS.map((opt) => (
@@ -106,7 +157,7 @@ export default function Leaderboard({ onBack }) {
               <tbody>
                 {players.map((player, index) => {
                   const rank = index + 1;
-                  const winRate = getWinRate(player);
+                  const playerWinRate = getWinRate(player);
                   const isYou =
                     player.username.toLowerCase() ===
                     currentUsername.toLowerCase();
@@ -157,11 +208,11 @@ export default function Leaderboard({ onBack }) {
                           <div className="leaderboard-winrate-bar">
                             <div
                               className="leaderboard-winrate-fill"
-                              style={{ width: `${winRate}%` }}
+                              style={{ width: `${playerWinRate}%` }}
                             />
                           </div>
                           <span className="leaderboard-winrate-label">
-                            {winRate}%
+                            {playerWinRate}%
                           </span>
                         </div>
                       </td>

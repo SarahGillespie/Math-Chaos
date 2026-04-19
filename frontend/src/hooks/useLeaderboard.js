@@ -12,7 +12,10 @@ export function useLeaderboard() {
   const [totalCount, setTotalCount] = useState(0);
   const [selectedUsername, setSelectedUsername] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [currentPlayerRank, setCurrentPlayerRank] = useState(null);
 
+  // Fetch the leaderboard page
   useEffect(() => {
     async function fetchPlayers() {
       setLoading(true);
@@ -34,6 +37,26 @@ export function useLeaderboard() {
     }
     fetchPlayers();
   }, [sort]);
+
+  // Fetch the current user's record and rank independently
+  useEffect(() => {
+    const username = localStorage.getItem("sim_username");
+    if (!username) return;
+
+    async function fetchCurrentPlayer() {
+      try {
+        const data = await playersAPI.getByUsername(username);
+        setCurrentPlayer(data.player ?? data);
+        // rank may be returned by the API; fall back to null if not
+        setCurrentPlayerRank(data.rank ?? null);
+      } catch (err) {
+        console.error("Failed to fetch current player:", err);
+        setCurrentPlayer(null);
+        setCurrentPlayerRank(null);
+      }
+    }
+    fetchCurrentPlayer();
+  }, []);
 
   const loadMore = useCallback(async () => {
     setLoadingMore(true);
@@ -98,5 +121,7 @@ export function useLeaderboard() {
     selectPlayer,
     deleteSelected,
     deleting,
+    currentPlayer,
+    currentPlayerRank,
   };
 }
