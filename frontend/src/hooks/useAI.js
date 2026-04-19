@@ -1,18 +1,17 @@
 import { useState, useCallback } from "react";
-import { findLosingTriangle, oppositeColor } from "../utils/gameHelpers.js";
+import { findLosingTriangle } from "../utils/gameHelpers.js";
 
 export function useAI(config, gameState) {
   const [aiThinking, setAiThinking] = useState(false);
 
   const {
     playerColor,
+    opponentColor,
     setMoves,
     setCurrentTurn,
     setGameOver,
     updatePlayerStats,
   } = gameState;
-
-  const opponentColor = oppositeColor(playerColor);
 
   const handleAIResponse = useCallback(
     async (res) => {

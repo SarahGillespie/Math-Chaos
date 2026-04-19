@@ -13,20 +13,22 @@ function getUsernameByColor(players, color) {
  */
 export async function createGame(req, res) {
   try {
-    const { mode, players, difficulty = "hard", gameName = "sim" } = req.body;
+    const { mode, players, difficulty = "hard", gameName = "sim", goFirst = true } = req.body;
 
     if (!mode || !players || players.length < 1) {
       return res.status(400).json({ error: "mode and players are required" });
     }
 
     const db = getDB();
+    const humanColor = players[0].color;
+    const AI_COLOR = "red";
 
     const fullPlayers = [...players];
     if (mode === "ai") {
-      const humanColor = players[0].color;
-      const aiColor = humanColor === "red" ? "blue" : "red";
-      fullPlayers.push({ username: "AI", color: aiColor });
+      fullPlayers.push({ username: "AI", color: AI_COLOR });
     }
+
+    const firstTurn = goFirst ? humanColor : AI_COLOR;
 
     const game = {
       gameName,
@@ -34,7 +36,7 @@ export async function createGame(req, res) {
       players: fullPlayers,
       difficulty,
       moves: [],
-      currentTurn: "red",
+      currentTurn: firstTurn,
       winner: null,
       status: mode === "multiplayer" ? "waiting" : "active",
       losingTriangle: null,
@@ -130,7 +132,7 @@ export async function addMove(req, res) {
       winner = getUsernameByColor(game.players, gameOver.winner);
       losingTriangle = gameOver.triangle;
     } else if (game.mode === "ai") {
-      const aiColor = color === "red" ? "blue" : "red";
+      const aiColor = "red";
       const aiResult = getBestMove(updatedMoves, aiColor, game.difficulty);
 
       if (aiResult) {
@@ -232,6 +234,67 @@ export async function updateGameStatus(req, res) {
   } catch (err) {
     console.error("updateGameStatus error:", err);
     res.status(500).json({ error: "Failed to update game status" });
+  }
+}
+
+/**
+ * Triggers an AI move without a preceding player move.
+ * Used when the AI goes first at the start of a game.
+ */
+export async function requestAiMove(req, res) {
+  try {
+    const db = getDB();
+    const game = await db
+      .collection("games")
+      .findOne({ _id: new ObjectId(req.params.id) });
+
+    if (!game) return res.status(404).json({ error: "Game not found" });
+    if (game.status === "finished") {
+      return res.status(400).json({ error: "Game is already finished" });
+    }
+    if (game.mode !== "ai") {
+      return res.status(400).json({ error: "Only valid for AI games" });
+    }
+
+    const aiColor = "red";
+    const aiResult = getBestMove(game.moves, aiColor, game.difficulty);
+    if (!aiResult) {
+      return res.status(400).json({ error: "No AI move available" });
+    }
+
+    const aiMove = {
+      edge: aiResult.edge,
+      color: aiColor,
+      username: "AI",
+      timestamp: new Date(),
+    };
+
+    const updatedMoves = [...game.moves, aiMove];
+    const aiGameOver = checkGameOver(updatedMoves, aiColor);
+    const status = aiGameOver ? "finished" : game.status;
+    const winner = aiGameOver
+      ? getUsernameByColor(game.players, aiGameOver.winner)
+      : null;
+    const losingTriangle = aiGameOver ? aiGameOver.triangle : null;
+
+    await db.collection("games").updateOne(
+      { _id: new ObjectId(req.params.id) },
+      {
+        $set: {
+          moves: updatedMoves,
+          currentTurn: game.players.find((p) => p.color !== aiColor)?.color,
+          status,
+          winner,
+          losingTriangle,
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    res.json({ moves: updatedMoves, status, winner, losingTriangle, aiMove });
+  } catch (err) {
+    console.error("requestAiMove error:", err);
+    res.status(500).json({ error: "Failed to get AI move" });
   }
 }
 

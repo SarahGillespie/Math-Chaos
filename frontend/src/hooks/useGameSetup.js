@@ -5,17 +5,23 @@ export function useGameSetup(onStartGame, username) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function createAIGame(difficulty) {
+  async function createAIGame(difficulty, color = "#3B6EA5", goFirst = true) {
+    const AI_COLOR = "red";
+    const firstTurn = goFirst ? color : AI_COLOR;
     const game = await gamesAPI.create({
       gameName: "sim",
       mode: "ai",
-      players: [{ username, color: "red" }],
+      players: [{ username, color }],
       difficulty,
+      goFirst,
     });
     return {
       gameId: game._id,
       mode: "ai",
-      playerColor: "red",
+      playerColor: color,
+      opponentColor: AI_COLOR,
+      firstTurn,
+      goFirst,
       username,
       difficulty,
     };
@@ -51,7 +57,7 @@ export function useGameSetup(onStartGame, username) {
   }
 
   const startGame = useCallback(
-    async ({ mode, difficulty, isJoining, roomCode = "" }) => {
+    async ({ mode, difficulty, color = "#3B6EA5", goFirst = true, isJoining, roomCode = "" }) => {
       setError("");
 
       if (mode === "multiplayer" && isJoining && !roomCode.trim()) {
@@ -63,7 +69,7 @@ export function useGameSetup(onStartGame, username) {
       try {
         let config;
         if (mode === "ai") {
-          config = await createAIGame(difficulty);
+          config = await createAIGame(difficulty, color, goFirst);
         } else if (!isJoining) {
           config = await createMultiplayerRoom();
         } else {

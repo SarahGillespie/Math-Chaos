@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { getHexNodes } from "../../utils/gameHelpers.js";
 import { useGameSetup } from "../../hooks/useGameSetup.js";
@@ -14,75 +14,33 @@ const PREVIEW_EDGES = [
   { a: 2, b: 4, color: "#C1440E" },
 ];
 
+const COLOR_PRESETS = [
+  { label: "Purple", hex: "#7B5EA7" },
+  { label: "Green",  hex: "#4A7C59" },
+  { label: "Blue",   hex: "#3B6EA5" },
+  { label: "Orange", hex: "#D4722A" },
+  { label: "Pink",   hex: "#C2547A" },
+  { label: "Teal",   hex: "#3A8F85" },
+];
+
 const RULES = [
-  {
-    num: "01",
-    text: (
-      <>
-        <strong>6 dots</strong> arranged in a hexagon.
-      </>
-    ),
-  },
-  {
-    num: "02",
-    text: (
-      <>
-        Players take turns drawing a line between any two{" "}
-        <strong>unconnected dots</strong>.
-      </>
-    ),
-  },
-  {
-    num: "03",
-    text: (
-      <>
-        <strong>Red</strong> and <strong>Blue</strong> each claim lines in their
-        color.
-      </>
-    ),
-  },
-  {
-    num: "04",
-    text: (
-      <>
-        First player to complete a{" "}
-        <strong>triangle of their own color loses</strong>.
-      </>
-    ),
-  },
+  { num: "01", text: (<><strong>6 dots</strong> arranged in a hexagon.</>) },
+  { num: "02", text: (<>Players take turns drawing a line between any two <strong>unconnected dots</strong>.</>) },
+  { num: "03", text: (<><strong>Red (AI)</strong> and your color each claim lines.</>) },
+  { num: "04", text: (<>First player to complete a <strong>triangle of their own color loses</strong>.</>) },
   { num: "05", text: <>Force your opponent into the losing move.</> },
 ];
 
 function HexPreview() {
   return (
-    <svg
-      viewBox="0 0 200 200"
-      className="menu-hex-preview"
-      aria-label="SIM board preview"
-    >
+    <svg viewBox="0 0 200 200" className="menu-hex-preview" aria-label="SIM board preview">
       {PREVIEW_EDGES.map((e, i) => (
-        <line
-          key={i}
-          x1={PREVIEW_NODES[e.a].x}
-          y1={PREVIEW_NODES[e.a].y}
-          x2={PREVIEW_NODES[e.b].x}
-          y2={PREVIEW_NODES[e.b].y}
-          stroke={e.color}
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.7"
-        />
+        <line key={i} x1={PREVIEW_NODES[e.a].x} y1={PREVIEW_NODES[e.a].y}
+          x2={PREVIEW_NODES[e.b].x} y2={PREVIEW_NODES[e.b].y}
+          stroke={e.color} strokeWidth="2" strokeLinecap="round" opacity="0.7" />
       ))}
       {PREVIEW_NODES.map((n, i) => (
-        <circle
-          key={i}
-          cx={n.x}
-          cy={n.y}
-          r="6"
-          fill="#fff"
-          stroke="#1C1A17"
-          strokeWidth="1.5"
-        />
+        <circle key={i} cx={n.x} cy={n.y} r="6" fill="#fff" stroke="#1C1A17" strokeWidth="1.5" />
       ))}
     </svg>
   );
@@ -91,20 +49,54 @@ function HexPreview() {
 export default function GameMenu({ onStartGame, onBack, username }) {
   const [mode, setMode] = useState("ai");
   const [difficulty, setDifficulty] = useState("hard");
+  const [color, setColor] = useState(COLOR_PRESETS[0].hex);
+  const [customHex, setCustomHex] = useState("");
+  const [goFirst, setGoFirst] = useState(true);
   const [roomCode, setRoomCode] = useState("");
   const [isJoining, setIsJoining] = useState(false);
 
+  const swatchRefs = useRef([]);
   const { startGame, loading, error } = useGameSetup(onStartGame, username);
+
+  // Arrow key navigation across the 2-row × 3-col swatch grid
+  function handleSwatchKeyDown(e, index) {
+    const cols = 3;
+    const total = COLOR_PRESETS.length;
+    let next = null;
+    if (e.key === "ArrowRight") next = (index + 1) % total;
+    if (e.key === "ArrowLeft")  next = (index - 1 + total) % total;
+    if (e.key === "ArrowDown")  next = (index + cols) % total;
+    if (e.key === "ArrowUp")    next = (index - cols + total) % total;
+    if (next !== null) {
+      e.preventDefault();
+      setColor(COLOR_PRESETS[next].hex);
+      setCustomHex("");
+      swatchRefs.current[next]?.focus();
+    }
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setColor(COLOR_PRESETS[index].hex);
+      setCustomHex("");
+    }
+  }
+
+  function handleCustomHexChange(e) {
+    const val = e.target.value;
+    setCustomHex(val);
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+      setColor(val);
+    }
+  }
+
+  function handleStart() {
+    startGame({ mode, difficulty, color, goFirst, isJoining, roomCode });
+  }
 
   function getStartLabel() {
     if (loading) return "Starting...";
     if (mode === "ai") return "Play vs AI →";
     if (isJoining) return "Join Game →";
     return "Create Room →";
-  }
-
-  function handleStart() {
-    startGame({ mode, difficulty, isJoining, roomCode });
   }
 
   return (
@@ -114,9 +106,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
           <img src="/transparent-logo.png" alt="Math Chaos" />
           <span>Math Chaos</span>
         </div>
-        <button className="menu-nav-back" onClick={onBack}>
-          ← All Games
-        </button>
+        <button className="menu-nav-back" onClick={onBack}>← All Games</button>
       </nav>
 
       <div className="menu-body">
@@ -130,9 +120,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
               one simple rule that hides surprising depth.
             </p>
           </div>
-
           <HexPreview />
-
           <div className="menu-rules">
             <p className="menu-rules-title">How to play</p>
             {RULES.map((rule) => (
@@ -148,14 +136,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
         <div className="menu-form">
           <div className="menu-field">
             <label className="menu-field-label">Playing as</label>
-            <div
-              className="menu-input"
-              style={{
-                color: "#8C7B6B",
-                cursor: "default",
-                userSelect: "none",
-              }}
-            >
+            <div className="menu-input" style={{ color: "#8C7B6B", cursor: "default", userSelect: "none" }}>
               {username}
             </div>
           </div>
@@ -165,17 +146,11 @@ export default function GameMenu({ onStartGame, onBack, username }) {
           <div className="menu-field">
             <label className="menu-field-label">Game Mode</label>
             <div className="menu-toggle">
-              <button
-                className={`menu-toggle-btn ${mode === "ai" ? "active" : ""}`}
-                onClick={() => setMode("ai")}
-              >
+              <button className={`menu-toggle-btn ${mode === "ai" ? "active" : ""}`} onClick={() => setMode("ai")}>
                 <span className="t-label">vs AI</span>
                 <span className="t-desc">Solo play</span>
               </button>
-              <button
-                className={`menu-toggle-btn ${mode === "multiplayer" ? "active" : ""}`}
-                onClick={() => setMode("multiplayer")}
-              >
+              <button className={`menu-toggle-btn ${mode === "multiplayer" ? "active" : ""}`} onClick={() => setMode("multiplayer")}>
                 <span className="t-label">vs Player</span>
                 <span className="t-desc">Online</span>
               </button>
@@ -186,17 +161,67 @@ export default function GameMenu({ onStartGame, onBack, username }) {
             <div className="menu-field">
               <label className="menu-field-label">Difficulty</label>
               <div className="menu-diff">
-                <button
-                  className={`menu-diff-btn ${difficulty === "easy" ? "active-easy" : ""}`}
-                  onClick={() => setDifficulty("easy")}
-                >
-                  Easy
+                <button className={`menu-diff-btn ${difficulty === "easy" ? "active-easy" : ""}`} onClick={() => setDifficulty("easy")}>Easy</button>
+                <button className={`menu-diff-btn ${difficulty === "hard" ? "active-hard" : ""}`} onClick={() => setDifficulty("hard")}>Hard</button>
+              </div>
+            </div>
+          )}
+
+          {mode === "ai" && (
+            <div className="menu-field">
+              <label className="menu-field-label" id="color-label">
+                Your color <span style={{ color: "#b0a090", fontWeight: 400 }}>(AI is always Red)</span>
+              </label>
+              {/* Swatch grid — arrow keys navigate, Tab enters the grid */}
+              <div className="menu-color-grid" role="radiogroup" aria-labelledby="color-label">
+                {COLOR_PRESETS.map((preset, i) => (
+                  <button
+                    key={preset.hex}
+                    ref={(el) => (swatchRefs.current[i] = el)}
+                    role="radio"
+                    aria-checked={color === preset.hex}
+                    aria-label={preset.label}
+                    className={`menu-color-swatch ${color === preset.hex ? "menu-color-swatch--active" : ""}`}
+                    style={{ "--swatch": preset.hex }}
+                    onClick={() => { setColor(preset.hex); setCustomHex(""); }}
+                    onKeyDown={(e) => handleSwatchKeyDown(e, i)}
+                    tabIndex={i === 0 ? 0 : -1}
+                  >
+                    <span className="menu-color-dot" style={{ background: preset.hex }} />
+                    <span className="menu-color-name">{preset.label}</span>
+                  </button>
+                ))}
+              </div>
+              {/* Custom hex input */}
+              <div className="menu-color-custom">
+                <span
+                  className="menu-color-preview"
+                  style={{ background: color }}
+                  aria-hidden="true"
+                />
+                <input
+                  className="menu-input menu-color-hex-input"
+                  type="text"
+                  placeholder="Custom hex e.g. #A83B6F"
+                  value={customHex}
+                  onChange={handleCustomHexChange}
+                  maxLength={7}
+                  aria-label="Custom hex color — type a 6-digit hex code"
+                  spellCheck={false}
+                />
+              </div>
+            </div>
+          )}
+
+          {mode === "ai" && (
+            <div className="menu-field">
+              <label className="menu-field-label">Turn order</label>
+              <div className="menu-diff">
+                <button className={`menu-diff-btn ${goFirst ? "active-hard" : ""}`} onClick={() => setGoFirst(true)}>
+                  I go first
                 </button>
-                <button
-                  className={`menu-diff-btn ${difficulty === "hard" ? "active-hard" : ""}`}
-                  onClick={() => setDifficulty("hard")}
-                >
-                  Hard
+                <button className={`menu-diff-btn ${!goFirst ? "active-hard" : ""}`} onClick={() => setGoFirst(false)}>
+                  AI goes first
                 </button>
               </div>
             </div>
@@ -206,19 +231,11 @@ export default function GameMenu({ onStartGame, onBack, username }) {
             <div className="menu-field">
               <label className="menu-field-label">Join or Host</label>
               <div className="menu-toggle" style={{ marginBottom: "0.75rem" }}>
-                <button
-                  className={`menu-toggle-btn ${!isJoining ? "active" : ""}`}
-                  onClick={() => setIsJoining(false)}
-                >
-                  <span className="t-label">Host</span>
-                  <span className="t-desc">Create room</span>
+                <button className={`menu-toggle-btn ${!isJoining ? "active" : ""}`} onClick={() => setIsJoining(false)}>
+                  <span className="t-label">Host</span><span className="t-desc">Create room</span>
                 </button>
-                <button
-                  className={`menu-toggle-btn ${isJoining ? "active" : ""}`}
-                  onClick={() => setIsJoining(true)}
-                >
-                  <span className="t-label">Join</span>
-                  <span className="t-desc">Enter code</span>
+                <button className={`menu-toggle-btn ${isJoining ? "active" : ""}`} onClick={() => setIsJoining(true)}>
+                  <span className="t-label">Join</span><span className="t-desc">Enter code</span>
                 </button>
               </div>
               {isJoining && (
@@ -229,11 +246,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                   maxLength={6}
-                  style={{
-                    fontFamily: "Space Mono, monospace",
-                    letterSpacing: "3px",
-                    textAlign: "center",
-                  }}
+                  style={{ fontFamily: "Space Mono, monospace", letterSpacing: "3px", textAlign: "center" }}
                 />
               )}
             </div>
@@ -243,11 +256,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
 
           <div className="menu-divider" />
 
-          <button
-            className="menu-start-btn"
-            onClick={handleStart}
-            disabled={loading}
-          >
+          <button className="menu-start-btn" onClick={handleStart} disabled={loading}>
             {getStartLabel()}
           </button>
         </div>

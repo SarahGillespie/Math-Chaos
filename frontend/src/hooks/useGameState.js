@@ -1,16 +1,16 @@
 import { useState, useRef } from "react";
 import { gamesAPI, playersAPI } from "../api/api.js";
 import { edgesEqual } from "../utils/edgeUtils.js";
-import { oppositeColor, findLosingTriangle } from "../utils/gameHelpers.js";
+import { findLosingTriangle } from "../utils/gameHelpers.js";
 
 export function useGameState(config) {
   const [moves, setMoves] = useState([]);
-  const [currentTurn, setCurrentTurn] = useState("red");
+  const [currentTurn, setCurrentTurn] = useState(config.firstTurn || config.playerColor);
   const [gameOver, setGameOver] = useState(null);
   const gameIdRef = useRef(config.gameId);
 
   const playerColor = config.playerColor;
-  const opponentColor = oppositeColor(playerColor);
+  const opponentColor = config.opponentColor;
 
   function isEdgeTaken(edge) {
     return moves.some((m) => edgesEqual(m.edge, edge));
@@ -47,10 +47,11 @@ export function useGameState(config) {
         mode: config.mode,
         players: [{ username: config.username, color: playerColor }],
         difficulty: config.difficulty,
+        goFirst: config.goFirst,
       });
       gameIdRef.current = game._id;
       setMoves([]);
-      setCurrentTurn("red");
+      setCurrentTurn(config.firstTurn || config.playerColor);
       setGameOver(null);
     } catch (err) {
       console.error("Reset game error:", err);
