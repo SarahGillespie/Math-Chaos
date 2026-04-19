@@ -798,3 +798,14 @@
   background: #c1440e;
 }
 
+
+/* Logo as button (clickable) */
+button.board-nav-logo img { width: 56px; height: 56px; }
+button.board-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+button.board-nav-logo:hover span { color: #c1440e; }

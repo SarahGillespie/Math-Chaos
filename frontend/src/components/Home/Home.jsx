@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import NavLogo from "../NavLogo/NavLogo.jsx";
 import "./Home.css";
 
 const GAMES = [
@@ -77,10 +78,7 @@ export default function Home({
     <div className="home-container">
       {/* Navbar */}
       <nav className="home-nav">
-        <div className="home-nav-logo">
-          <img src="/transparent-logo.png" alt="Math Chaos" />
-          <span>Math Chaos</span>
-        </div>
+        <NavLogo className="home-nav-logo" />
         <div className="home-nav-actions">
           <span
             style={{

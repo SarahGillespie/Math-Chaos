@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { gamesAPI } from "../../api/api.js";
 import { useGameState } from "../../hooks/useGameState.js";
@@ -6,6 +6,8 @@ import { useAI } from "../../hooks/useAI.js";
 import { useMultiplayer } from "../../hooks/useMultiplayer.js";
 import { edgesEqual, getAllEdges } from "../../utils/edgeUtils.js";
 import { getHexNodes, findLosingTriangle } from "../../utils/gameHelpers.js";
+import { formatEdge } from "../../utils/formatters.js";
+import NavLogo from "../NavLogo/NavLogo.jsx";
 import "./GameBoard.css";
 
 const NODE_R = 10;
@@ -44,42 +46,6 @@ export default function GameBoard({ config, onBackToMenu }) {
   } = gameState;
 
   const isMyTurn = currentTurn === playerColor && !aiThinking && !gameOver;
-
-  // Map a move's color string to a display hex.
-  // playerColor and opponentColor are already hex values (e.g. "#7B5EA7").
-  // opponentColor (AI) is always "red" — map that to its hex.
-  const AI_HEX = "#C1440E";
-  function colorToHex(c) {
-    if (c === opponentColor || c === "red") return AI_HEX;
-    if (c === playerColor) return playerColor;
-    return "#888";
-  }
-
-  const inputRef = useRef(null);
-  useEffect(() => {
-    if (isMyTurn) inputRef.current?.focus();
-  }, [isMyTurn]);
-
-  const aiFirstTriggered = useRef(false);
-  useEffect(() => {
-    if (
-      isAiMode &&
-      config.goFirst === false &&
-      moves.length === 0 &&
-      !gameOver &&
-      !aiFirstTriggered.current
-    ) {
-      aiFirstTriggered.current = true;
-      (async () => {
-        try {
-          const res = await gamesAPI.requestAiMove(gameIdRef.current, opponentColor);
-          await handleAIResponse(res);
-        } catch (err) {
-          console.error("AI first move error:", err);
-        }
-      })();
-    }
-  }, [isAiMode, config.goFirst, moves.length, gameOver, gameIdRef, opponentColor, handleAIResponse]);
 
   const handleEdgeClick = useCallback(
     async (edge) => {
@@ -188,10 +154,7 @@ export default function GameBoard({ config, onBackToMenu }) {
   return (
     <div className="board-container">
       <nav className="board-nav">
-        <div className="board-nav-logo">
-          <img src="/transparent-logo.png" alt="Math Chaos" />
-          <span>Math Chaos</span>
-        </div>
+        <NavLogo className="board-nav-logo" onClick={onBackToMenu} />
         <button className="board-nav-back" onClick={onBackToMenu}>
           ← All Games
         </button>
@@ -202,8 +165,7 @@ export default function GameBoard({ config, onBackToMenu }) {
           {!gameOver && (
             <div className="board-turn">
               <div
-                className="board-turn-dot"
-                style={{ background: colorToHex(currentTurn) }}
+                className={`board-turn-dot board-turn-dot--${currentTurn}`}
               />
               <span className="board-turn-label">{getTurnLabel()}</span>
               {isMyTurn && (
@@ -224,8 +186,8 @@ export default function GameBoard({ config, onBackToMenu }) {
               <span className="board-hint-icon">!</span>
               <span>
                 Avoid completing a triangle in your color (
-                <span style={{ color: playerColor, fontWeight: 600 }}>
-                  your color
+                <span style={{ color: "#C1440E", fontWeight: 600 }}>
+                  {playerColor}
                 </span>
                 ). Force your opponent to close theirs.
               </span>
@@ -239,7 +201,6 @@ export default function GameBoard({ config, onBackToMenu }) {
               </label>
               <div className="board-keyboard-row">
                 <input
-                  ref={inputRef}
                   className="board-keyboard-field"
                   type="text"
                   inputMode="numeric"
@@ -289,7 +250,7 @@ export default function GameBoard({ config, onBackToMenu }) {
                         y1={n1.y}
                         x2={n2.x}
                         y2={n2.y}
-                        stroke={playerColor}
+                        stroke={playerColor === "red" ? "#C1440E" : "#3B6EA5"}
                         strokeWidth="2.5"
                         strokeLinecap="round"
                         opacity="0.3"
@@ -302,11 +263,15 @@ export default function GameBoard({ config, onBackToMenu }) {
                         y1={n1.y}
                         x2={n2.x}
                         y2={n2.y}
-                        stroke={colorToHex(
+                        stroke={
                           isLosingEdge(edge)
-                            ? gameOver?.loser
-                            : getEdgeColor(edge)
-                        )}
+                            ? gameOver?.loser === "red"
+                              ? "#C1440E"
+                              : "#3B6EA5"
+                            : getEdgeColor(edge) === "red"
+                              ? "#C1440E"
+                              : "#3B6EA5"
+                        }
                         strokeWidth={isLosingEdge(edge) ? 5 : 2.5}
                         strokeLinecap="round"
                         opacity={isLosingEdge(edge) ? 1 : 0.85}
@@ -427,25 +392,41 @@ export default function GameBoard({ config, onBackToMenu }) {
           <div className="board-score-card">
             <div className="board-score-header">Players</div>
             <div className="board-score-players">
-              {/* Player row */}
               <div className="board-score-player">
-                <div className="board-score-color" style={{ background: playerColor }} />
-                <div className="board-score-name">{config.username}</div>
-                <div className="board-score-role">You</div>
-                {currentTurn === playerColor && !gameOver && (
-                  <div className="board-score-active" style={{ color: playerColor }}>
-                    ● your turn
+                <div className="board-score-color board-score-color--red" />
+                <div className="board-score-name">
+                  {playerColor === "red" ? config.username : getOpponentName()}
+                </div>
+                <div className="board-score-role">
+                  {playerColor === "red" ? "You" : "Opponent"} — Red
+                </div>
+                {currentTurn === "red" && !gameOver && (
+                  <div
+                    className="board-score-active"
+                    style={{
+                      color: playerColor === "red" ? "#C1440E" : "#8C7B6B",
+                    }}
+                  >
+                    {playerColor === "red" ? "● your turn" : "● their turn"}
                   </div>
                 )}
               </div>
-              {/* Opponent row */}
               <div className="board-score-player">
-                <div className="board-score-color" style={{ background: AI_HEX }} />
-                <div className="board-score-name">{getOpponentName()}</div>
-                <div className="board-score-role">Opponent</div>
-                {currentTurn === opponentColor && !gameOver && (
-                  <div className="board-score-active" style={{ color: AI_HEX }}>
-                    ● their turn
+                <div className="board-score-color board-score-color--blue" />
+                <div className="board-score-name">
+                  {playerColor === "blue" ? config.username : getOpponentName()}
+                </div>
+                <div className="board-score-role">
+                  {playerColor === "blue" ? "You" : "Opponent"} — Blue
+                </div>
+                {currentTurn === "blue" && !gameOver && (
+                  <div
+                    className="board-score-active"
+                    style={{
+                      color: playerColor === "blue" ? "#3B6EA5" : "#8C7B6B",
+                    }}
+                  >
+                    {playerColor === "blue" ? "● your turn" : "● their turn"}
                   </div>
                 )}
               </div>
@@ -463,11 +444,10 @@ export default function GameBoard({ config, onBackToMenu }) {
                 [...moves].reverse().map((m, i) => (
                   <div key={i} className="board-history-item">
                     <div
-                      className="board-history-dot"
-                      style={{ background: colorToHex(m.color) }}
+                      className={`board-history-dot board-history-dot--${m.color}`}
                     />
                     <span className="board-history-move">
-                      {m.edge[0] + 1} – {m.edge[1] + 1}
+                      {formatEdge(m.edge)}
                     </span>
                     <span className="board-history-who">
                       {m.username === "AI" ? "AI" : m.username}

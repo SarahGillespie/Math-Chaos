@@ -407,3 +407,14 @@
   letter-spacing: 0.5px;
   padding: 0.5rem 0.75rem;
 }
+
+/* Logo as button (clickable) */
+button.menu-nav-logo img { width: 56px; height: 56px; }
+button.menu-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+button.menu-nav-logo:hover span { color: #c1440e; }
