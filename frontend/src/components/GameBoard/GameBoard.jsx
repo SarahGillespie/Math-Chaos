@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { gamesAPI } from "../../api/api.js";
 import { useGameState } from "../../hooks/useGameState.js";
@@ -16,6 +16,8 @@ const allEdges = getAllEdges();
 export default function GameBoard({ config, onBackToMenu }) {
   const isAiMode = config.mode === "ai";
   const [hoveredEdge, setHoveredEdge] = useState(null);
+  const [edgeInput, setEdgeInput] = useState("");
+  const [inputError, setInputError] = useState("");
 
   const gameState = useGameState(config);
   const { aiThinking, handleAIResponse } = useAI(config, gameState);
@@ -43,6 +45,11 @@ export default function GameBoard({ config, onBackToMenu }) {
   } = gameState;
 
   const isMyTurn = currentTurn === playerColor && !aiThinking && !gameOver;
+
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (isMyTurn) inputRef.current?.focus();
+  }, [isMyTurn]);
 
   const handleEdgeClick = useCallback(
     async (edge) => {
@@ -99,6 +106,43 @@ export default function GameBoard({ config, onBackToMenu }) {
     ]
   );
 
+  const handleEdgeInputSubmit = useCallback(() => {
+    setInputError("");
+    // Accept "1 3", "1,3", "13", "1-3"
+    const normalized = edgeInput.trim().replace(/[\s,\-]+/, " ");
+    const digits = normalized.split(" ").filter(Boolean);
+    let a, b;
+    if (digits.length === 1 && digits[0].length === 2) {
+      a = parseInt(digits[0][0], 10);
+      b = parseInt(digits[0][1], 10);
+    } else if (digits.length === 2) {
+      a = parseInt(digits[0], 10);
+      b = parseInt(digits[1], 10);
+    } else {
+      setInputError("Enter two node numbers, e.g. 1 3");
+      return;
+    }
+
+    if (isNaN(a) || isNaN(b) || a < 1 || a > 6 || b < 1 || b > 6) {
+      setInputError("Nodes must be between 1 and 6");
+      return;
+    }
+    if (a === b) {
+      setInputError("Choose two different nodes");
+      return;
+    }
+
+    const edge = [a - 1, b - 1].sort((x, y) => x - y);
+
+    if (isEdgeTaken(edge)) {
+      setInputError(`Edge ${a}–${b} is already taken`);
+      return;
+    }
+
+    setEdgeInput("");
+    handleEdgeClick(edge);
+  }, [edgeInput, isEdgeTaken, handleEdgeClick]);
+
   function getTurnLabel() {
     if (aiThinking) return "AI is thinking...";
     if (isMyTurn) return "Your turn";
@@ -133,7 +177,7 @@ export default function GameBoard({ config, onBackToMenu }) {
               <span className="board-turn-label">{getTurnLabel()}</span>
               {isMyTurn && (
                 <span style={{ color: "#B0A090", fontSize: "0.75rem" }}>
-                  — click any open line
+                  — click a line or type two node numbers
                 </span>
               )}
               {!isMyTurn && !aiThinking && (
@@ -154,6 +198,42 @@ export default function GameBoard({ config, onBackToMenu }) {
                 </span>
                 ). Force your opponent to close theirs.
               </span>
+            </div>
+          )}
+
+          {!gameOver && isMyTurn && (
+            <div className="board-keyboard-input">
+              <label className="board-keyboard-label">
+                Enter nodes (1–6):
+              </label>
+              <div className="board-keyboard-row">
+                <input
+                  ref={inputRef}
+                  className="board-keyboard-field"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={3}
+                  placeholder="e.g. 1 3"
+                  value={edgeInput}
+                  onChange={(e) => {
+                    setInputError("");
+                    setEdgeInput(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleEdgeInputSubmit();
+                  }}
+                  aria-label="Enter two node numbers to select an edge"
+                />
+                <button
+                  className="board-keyboard-submit"
+                  onClick={handleEdgeInputSubmit}
+                >
+                  Play
+                </button>
+              </div>
+              {inputError && (
+                <span className="board-keyboard-error">{inputError}</span>
+              )}
             </div>
           )}
 
@@ -235,7 +315,7 @@ export default function GameBoard({ config, onBackToMenu }) {
                     className="board-node-label"
                     style={{ fontSize: "9px" }}
                   >
-                    {i}
+                    {i + 1}
                   </text>
                 </g>
               ))}

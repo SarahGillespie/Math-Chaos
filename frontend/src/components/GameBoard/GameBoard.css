@@ -447,7 +447,72 @@
   }
 }
 
-/* ── Hint bar ── */
+/* ── Keyboard / text input ── */
+.board-keyboard-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.board-keyboard-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #8c7b6b;
+}
+
+.board-keyboard-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.board-keyboard-field {
+  flex: 1;
+  max-width: 120px;
+  padding: 0.5rem 0.75rem;
+  border: 0.5px solid #c8bdb0;
+  border-radius: 6px;
+  background: #fff;
+  font-family: "Space Mono", monospace;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.board-keyboard-field:focus {
+  border-color: #1c1a17;
+}
+
+.board-keyboard-field::placeholder {
+  color: #c8bdb0;
+}
+
+.board-keyboard-submit {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #1c1a17;
+  color: #f5f0e8;
+  font-family: "Space Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.board-keyboard-submit:hover {
+  background: #c1440e;
+}
+
+.board-keyboard-error {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  color: #c1440e;
+}
 .board-hint {
   display: flex;
   align-items: center;
