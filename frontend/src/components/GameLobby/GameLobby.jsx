@@ -61,6 +61,7 @@ export default function GameLobby({ config, onGameReady, onBack }) {
                     copied ? "lobby-copy-btn--copied" : ""
                   }`}
                   onClick={handleCopy}
+                  aria-label="Copy room code to clipboard"
                 >
                   {copied ? "Copied!" : "Copy"}
                 </button>

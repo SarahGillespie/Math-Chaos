@@ -5,6 +5,7 @@ import {
   getRankClass,
   getRankLabel,
 } from "../../utils/formatters.js";
+import NavLogo from "../NavLogo/NavLogo.jsx";
 import "./Leaderboard.css";
 
 const SORT_OPTIONS = [
@@ -27,11 +28,9 @@ export default function Leaderboard({ onBack }) {
     totalCount,
     hasMore,
     loadMore,
-    selectedUsername,
-    selectPlayer,
-    deleteSelected,
     deleting,
     currentPlayer,
+    deleteOwnAccount,
   } = useLeaderboard();
 
   const currentUsername = localStorage.getItem("sim_username") || "";
@@ -40,17 +39,13 @@ export default function Leaderboard({ onBack }) {
   return (
     <div className="leaderboard-container">
       <nav className="leaderboard-nav">
-        <div className="leaderboard-nav-logo">
-          <img src="/transparent-logo.png" alt="Math Chaos" />
-          <span>Math Chaos</span>
-        </div>
+        <NavLogo className="leaderboard-nav-logo" onClick={onBack} />
         <button className="leaderboard-nav-back" onClick={onBack}>
           ← All Games
         </button>
       </nav>
 
       <div className="leaderboard-body">
-        {/* Header row with delete button */}
         <div className="leaderboard-header">
           <div>
             <p className="leaderboard-eyebrow">Math Chaos</p>
@@ -61,46 +56,45 @@ export default function Leaderboard({ onBack }) {
               </p>
             )}
           </div>
-          <button
-            className={`leaderboard-delete-btn ${
-              selectedUsername ? "leaderboard-delete-btn--active" : ""
-            }`}
-            onClick={deleteSelected}
-            disabled={!selectedUsername || deleting}
-          >
-            {deleting
-              ? "Deleting..."
-              : selectedUsername
-                ? `Delete "${selectedUsername}"`
-                : "Select a player to delete"}
-          </button>
         </div>
 
         {/* Your Stats card */}
         {currentUsername && (
           <div className="ys-card">
             <div className="ys-header">
-              <div className="ys-avatar">
-                {getInitials(currentUsername)}
-              </div>
+              <div className="ys-avatar">{getInitials(currentUsername)}</div>
               <div>
                 <p className="ys-label">your stats</p>
                 <p className="ys-username">{currentUsername}</p>
               </div>
+              <button
+                className="ys-delete-btn"
+                onClick={deleteOwnAccount}
+                disabled={deleting}
+                aria-label="Delete your account"
+              >
+                {deleting ? "Deleting..." : "Delete Account"}
+              </button>
             </div>
 
             {currentPlayer ? (
               <div className="ys-grid">
                 <div className="ys-stat">
-                  <span className="ys-val ys-val--wins">{currentPlayer.wins}</span>
+                  <span className="ys-val ys-val--wins">
+                    {currentPlayer.wins}
+                  </span>
                   <span className="ys-key">wins</span>
                 </div>
                 <div className="ys-stat">
-                  <span className="ys-val ys-val--losses">{currentPlayer.losses}</span>
+                  <span className="ys-val ys-val--losses">
+                    {currentPlayer.losses}
+                  </span>
                   <span className="ys-key">losses</span>
                 </div>
                 <div className="ys-stat">
-                  <span className="ys-val ys-val--streak">{currentPlayer.winStreak}</span>
+                  <span className="ys-val ys-val--streak">
+                    {currentPlayer.winStreak}
+                  </span>
                   <span className="ys-key">streak</span>
                 </div>
                 <div className="ys-stat">
@@ -110,24 +104,34 @@ export default function Leaderboard({ onBack }) {
                 <div className="ys-winrate">
                   <span className="ys-key">win rate</span>
                   <div className="ys-bar-wrap">
-                    <div className="ys-bar-fill" style={{ width: `${winRate}%` }} />
+                    <div
+                      className="ys-bar-fill"
+                      style={{ width: `${winRate}%` }}
+                    />
                   </div>
                   <span className="ys-winrate-val">{winRate}%</span>
                 </div>
               </div>
             ) : (
-              <p className="ys-empty">Play a game to appear on the leaderboard!</p>
+              <p className="ys-empty">
+                Play a game to appear on the leaderboard!
+              </p>
             )}
           </div>
         )}
 
         {/* Sort tabs */}
-        <div className="leaderboard-tabs">
+        <div
+          className="leaderboard-tabs"
+          role="group"
+          aria-label="Sort options"
+        >
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.key}
               className={`leaderboard-tab ${sort === opt.key ? "active" : ""}`}
               onClick={() => setSort(opt.key)}
+              aria-pressed={sort === opt.key}
             >
               {opt.label}
             </button>
@@ -143,7 +147,10 @@ export default function Leaderboard({ onBack }) {
               No players yet. Be the first to play!
             </div>
           ) : (
-            <table className="leaderboard-table">
+            <table
+              className="leaderboard-table"
+              aria-label="Player leaderboard"
+            >
               <thead>
                 <tr>
                   <th>#</th>
@@ -161,15 +168,11 @@ export default function Leaderboard({ onBack }) {
                   const isYou =
                     player.username.toLowerCase() ===
                     currentUsername.toLowerCase();
-                  const isSelected = selectedUsername === player.username;
 
                   return (
                     <tr
                       key={player._id}
-                      className={`leaderboard-row ${
-                        isSelected ? "leaderboard-row--selected" : ""
-                      }`}
-                      onClick={() => selectPlayer(player.username)}
+                      className={`leaderboard-row ${isYou ? "leaderboard-row--you" : ""}`}
                     >
                       <td>
                         <span className={getRankClass(rank)}>

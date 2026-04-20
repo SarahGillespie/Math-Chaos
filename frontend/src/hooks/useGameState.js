@@ -1,16 +1,19 @@
 import { useState, useRef } from "react";
 import { gamesAPI, playersAPI } from "../api/api.js";
 import { edgesEqual } from "../utils/edgeUtils.js";
-import { findLosingTriangle } from "../utils/gameHelpers.js";
+import { oppositeColor, findLosingTriangle } from "../utils/gameHelpers.js";
 
 export function useGameState(config) {
   const [moves, setMoves] = useState([]);
-  const [currentTurn, setCurrentTurn] = useState(config.firstTurn || config.playerColor);
+  const [currentTurn, setCurrentTurn] = useState(
+    config.firstTurn || config.playerColor
+  );
   const [gameOver, setGameOver] = useState(null);
   const gameIdRef = useRef(config.gameId);
 
   const playerColor = config.playerColor;
-  const opponentColor = config.opponentColor;
+  const opponentColor =
+    config.opponentColor || oppositeColor(config.playerColor);
 
   function isEdgeTaken(edge) {
     return moves.some((m) => edgesEqual(m.edge, edge));
@@ -33,7 +36,8 @@ export function useGameState(config) {
 
   async function updatePlayerStats(winnerUsername) {
     try {
-      const playerWon = winnerUsername === config.username;
+      const playerWon =
+        winnerUsername?.toLowerCase() === config.username?.toLowerCase();
       await playersAPI.updateResult(config.username, playerWon);
     } catch (err) {
       console.error("Stats update error:", err);

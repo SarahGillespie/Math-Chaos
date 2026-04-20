@@ -116,7 +116,7 @@ export default function Home({
       </header>
 
       {/* Games grid */}
-      <main className="home-games-section">
+      <main className="home-games-section" aria-label="Available games">
         <p className="home-section-label">Available Games</p>
         <div className="home-games-grid">
           {GAMES.map((game) => (
@@ -152,11 +152,16 @@ export default function Home({
                   <button
                     className="game-card-play-btn"
                     onClick={() => onSelectGame(game.id)}
+                    aria-label={`Play ${game.title}`}
                   >
                     Play {game.title} →
                   </button>
                 ) : (
-                  <button className="game-card-play-btn--disabled" disabled>
+                  <button
+                    className="game-card-play-btn--disabled"
+                    disabled
+                    aria-label={`${game.title} coming soon`}
+                  >
                     Coming soon
                   </button>
                 )}

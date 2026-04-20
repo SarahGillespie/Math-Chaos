@@ -174,9 +174,15 @@
   color: #1c1a17;
 }
 
-.ys-val--wins  { color: #4a7c59; }
-.ys-val--losses { color: #c1440e; }
-.ys-val--streak { color: #3b6ea5; }
+.ys-val--wins {
+  color: #4a7c59;
+}
+.ys-val--losses {
+  color: #c1440e;
+}
+.ys-val--streak {
+  color: #3b6ea5;
+}
 
 .ys-key {
   font-family: "Space Mono", monospace;
@@ -390,9 +396,15 @@
   font-size: 0.82rem;
 }
 
-.leaderboard-stat--wins   { color: #4a7c59; }
-.leaderboard-stat--losses { color: #c1440e; }
-.leaderboard-stat--streak { color: #3b6ea5; }
+.leaderboard-stat--wins {
+  color: #4a7c59;
+}
+.leaderboard-stat--losses {
+  color: #c1440e;
+}
+.leaderboard-stat--streak {
+  color: #3b6ea5;
+}
 
 /* Win rate bar */
 .leaderboard-winrate-wrap {
@@ -476,4 +488,47 @@
 .leaderboard-load-more-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.leaderboard-row--own {
+  cursor: pointer;
+}
+
+.leaderboard-row--own:hover td {
+  background: rgba(193, 68, 14, 0.04);
+}
+
+.ys-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ys-delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 0.5px solid #c8bdb0;
+  color: #b0a090;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ys-delete-btn:hover:not(:disabled) {
+  border-color: #c1440e;
+  color: #c1440e;
+  background: rgba(193, 68, 14, 0.06);
+}
+
+.ys-delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.leaderboard-row--you td {
+  background: rgba(59, 110, 165, 0.04);
 }
