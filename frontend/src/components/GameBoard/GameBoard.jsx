@@ -382,12 +382,17 @@ export default function GameBoard({ config, onBackToMenu }) {
                     rel="noopener noreferrer"
                   >
                     {" "}
-                    <i>Math with Bad Drawings</i> book
+                    <i>
+                      <u>Math with Bad Drawings</u>
+                    </i>{" "}
+                    book
                   </a>
                   <br />
                   <a href="https://mathworld.wolfram.com/RamseyNumber.html">
                     {" "}
-                    List of known Ramsey Numbers
+                    <i>
+                      <u>List of known Ramsey Numbers</u>
+                    </i>
                   </a>
                   <a
                     href="https://web.math.princeton.edu/~nalon/PDFS/listramsey6.pdf"
@@ -395,7 +400,9 @@ export default function GameBoard({ config, onBackToMenu }) {
                     rel="noopener noreferrer"
                   >
                     {" "}
-                    How to calculate Ramsey Numbers
+                    <i>
+                      <u>How to calculate Ramsey Numbers</u>
+                    </i>
                   </a>
                 </p>
               </div>

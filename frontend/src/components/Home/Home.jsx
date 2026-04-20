@@ -110,8 +110,8 @@ export default function Home({
           Think <em>mathematically.</em>
         </h1>
         <p>
-          A collection of deep, easy-to-learn mathematical games. No installs,
-          no accounts. Just pick a game and play.
+          A collection of deep, easy-to-learn mathematical games. Pick a game
+          and start playing — your stats are saved automatically.
         </p>
       </header>
 
