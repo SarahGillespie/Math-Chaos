@@ -1,4 +1,4 @@
-# Math-Chaos: Play games. Think mathematically.
+# Math Chaos: Play games. Think mathematically.
 
 ## Author & Class Info
 
@@ -6,7 +6,7 @@
 - **Class:** CS5610 Web Development — Northeastern University
 - **Deployed:** [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)
 - **GitHub:** [github.com/SarahGillespie/Math-Chaos](https://github.com/SarahGillespie/Math-Chaos)
-- **Slides:** [Google Slides](add!)
+- **Slides:** [Google Slides](https://docs.google.com/presentation/d/1fb5l_20vnFCJvB0mr2t-4MXrW0g4kOnK0qdMG7BhKXE/edit?usp=sharing)
 - **Video Demonstration:** [Video](add!)
 
 ---
