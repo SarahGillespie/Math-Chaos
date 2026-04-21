@@ -38,6 +38,7 @@ export default function Auth({ onLogin }) {
 
   return (
     <div className="auth-container">
+      <main>
       <div className="auth-card">
         <div className="auth-logo">
           <img src="/transparent-logo.png" alt="Math Chaos" />
@@ -68,10 +69,17 @@ export default function Auth({ onLogin }) {
           </button>
         </div>
 
-        <div className="auth-fields">
+        <div
+          className="auth-fields"
+          role="form"
+          aria-label={isLogin ? "Login form" : "Sign up form"}
+        >
           <div className="auth-field">
-            <label className="auth-label">Username</label>
+            <label htmlFor="auth-username" className="auth-label">
+              Username
+            </label>
             <input
+              id="auth-username"
               className="auth-input"
               type="text"
               placeholder="Enter username..."
@@ -80,12 +88,17 @@ export default function Auth({ onLogin }) {
               onKeyDown={handleKeyDown}
               maxLength={20}
               autoFocus
+              autoComplete="username"
+              aria-required="true"
             />
           </div>
 
           <div className="auth-field">
-            <label className="auth-label">Password</label>
+            <label htmlFor="auth-password" className="auth-label">
+              Password
+            </label>
             <input
+              id="auth-password"
               className="auth-input"
               type="password"
               placeholder="Enter password..."
@@ -93,11 +106,17 @@ export default function Auth({ onLogin }) {
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={handleKeyDown}
               maxLength={50}
+              autoComplete={isLogin ? "current-password" : "new-password"}
+              aria-required="true"
             />
           </div>
         </div>
 
-        {error && <p className="auth-error">{error}</p>}
+        {error && (
+          <p className="auth-error" role="alert" aria-live="polite">
+            {error}
+          </p>
+        )}
 
         <button
           className="auth-submit-btn"
@@ -124,6 +143,7 @@ export default function Auth({ onLogin }) {
           </button>
         </p>
       </div>
+      </main>
     </div>
   );
 }

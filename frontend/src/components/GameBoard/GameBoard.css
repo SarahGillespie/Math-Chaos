@@ -447,7 +447,72 @@
   }
 }
 
-/* ── Hint bar ── */
+/* ── Keyboard / text input ── */
+.board-keyboard-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.board-keyboard-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #8c7b6b;
+}
+
+.board-keyboard-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.board-keyboard-field {
+  flex: 1;
+  max-width: 120px;
+  padding: 0.5rem 0.75rem;
+  border: 0.5px solid #c8bdb0;
+  border-radius: 6px;
+  background: #fff;
+  font-family: "Space Mono", monospace;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.board-keyboard-field:focus {
+  border-color: #1c1a17;
+}
+
+.board-keyboard-field::placeholder {
+  color: #c8bdb0;
+}
+
+.board-keyboard-submit {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #1c1a17;
+  color: #f5f0e8;
+  font-family: "Space Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.board-keyboard-submit:hover {
+  background: #c1440e;
+}
+
+.board-keyboard-error {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  color: #c1440e;
+}
 .board-hint {
   display: flex;
   align-items: center;
@@ -609,6 +674,138 @@
   max-width: 580px;
 }
 
-.board-math-concept-body strong {
-  color: #1c1a17;
+/* ── Setup screen ── */
+.setup-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
+
+.setup-card {
+  background: #fff;
+  border: 0.5px solid #d4c8ba;
+  border-radius: 10px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.setup-title {
+  font-family: "Space Mono", monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1c1a17;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.setup-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.setup-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c7b6b;
+}
+
+.setup-options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.setup-color-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 0.5px solid #c8bdb0;
+  background: transparent;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: #8c7b6b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.setup-color-btn--red.setup-color-btn--active {
+  border-color: #c1440e;
+  background: rgba(193, 68, 14, 0.06);
+  color: #c1440e;
+}
+
+.setup-color-btn--blue.setup-color-btn--active {
+  border-color: #3b6ea5;
+  background: rgba(59, 110, 165, 0.06);
+  color: #3b6ea5;
+}
+
+.setup-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.setup-color-dot--red { background: #c1440e; }
+.setup-color-dot--blue { background: #3b6ea5; }
+
+.setup-turn-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 0.5px solid #c8bdb0;
+  background: transparent;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: #8c7b6b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.setup-turn-btn--active {
+  border-color: #1c1a17;
+  background: #1c1a17;
+  color: #f5f0e8;
+}
+
+.setup-start-btn {
+  padding: 0.85rem;
+  border-radius: 6px;
+  border: none;
+  background: #1c1a17;
+  color: #f5f0e8;
+  font-family: "Space Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.setup-start-btn:hover {
+  background: #c1440e;
+}
+
+
+/* Logo as button (clickable) */
+button.board-nav-logo img { width: 56px; height: 56px; }
+button.board-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+button.board-nav-logo:hover span { color: #c1440e; }

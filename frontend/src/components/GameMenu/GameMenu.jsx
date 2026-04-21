@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { getHexNodes } from "../../utils/gameHelpers.js";
 import { useGameSetup } from "../../hooks/useGameSetup.js";
+import NavLogo from "../NavLogo/NavLogo.jsx";
 import "./GameMenu.css";
 
 const PREVIEW_NODES = getHexNodes(100, 100, 70);
@@ -110,10 +111,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
   return (
     <div className="menu-container">
       <nav className="menu-nav">
-        <div className="menu-nav-logo">
-          <img src="/transparent-logo.png" alt="Math Chaos" />
-          <span>Math Chaos</span>
-        </div>
+        <NavLogo className="menu-nav-logo" onClick={onBack} />
         <button className="menu-nav-back" onClick={onBack}>
           ← All Games
         </button>
@@ -164,10 +162,11 @@ export default function GameMenu({ onStartGame, onBack, username }) {
 
           <div className="menu-field">
             <label className="menu-field-label">Game Mode</label>
-            <div className="menu-toggle">
+            <div className="menu-toggle" role="group" aria-label="Game mode">
               <button
                 className={`menu-toggle-btn ${mode === "ai" ? "active" : ""}`}
                 onClick={() => setMode("ai")}
+                aria-pressed={mode === "ai"}
               >
                 <span className="t-label">vs AI</span>
                 <span className="t-desc">Solo play</span>
@@ -175,6 +174,7 @@ export default function GameMenu({ onStartGame, onBack, username }) {
               <button
                 className={`menu-toggle-btn ${mode === "multiplayer" ? "active" : ""}`}
                 onClick={() => setMode("multiplayer")}
+                aria-pressed={mode === "multiplayer"}
               >
                 <span className="t-label">vs Player</span>
                 <span className="t-desc">Online</span>
@@ -185,16 +185,18 @@ export default function GameMenu({ onStartGame, onBack, username }) {
           {mode === "ai" && (
             <div className="menu-field">
               <label className="menu-field-label">Difficulty</label>
-              <div className="menu-diff">
+              <div className="menu-diff" role="group" aria-label="Difficulty">
                 <button
                   className={`menu-diff-btn ${difficulty === "easy" ? "active-easy" : ""}`}
                   onClick={() => setDifficulty("easy")}
+                  aria-pressed={difficulty === "easy"}
                 >
                   Easy
                 </button>
                 <button
                   className={`menu-diff-btn ${difficulty === "hard" ? "active-hard" : ""}`}
                   onClick={() => setDifficulty("hard")}
+                  aria-pressed={difficulty === "hard"}
                 >
                   Hard
                 </button>
@@ -228,6 +230,9 @@ export default function GameMenu({ onStartGame, onBack, username }) {
                   placeholder="ROOM CODE"
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleStart();
+                  }}
                   maxLength={6}
                   style={{
                     fontFamily: "Space Mono, monospace",

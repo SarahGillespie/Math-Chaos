@@ -7,6 +7,7 @@ import { useMultiplayer } from "../../hooks/useMultiplayer.js";
 import { edgesEqual, getAllEdges } from "../../utils/edgeUtils.js";
 import { getHexNodes, findLosingTriangle } from "../../utils/gameHelpers.js";
 import { formatEdge } from "../../utils/formatters.js";
+import NavLogo from "../NavLogo/NavLogo.jsx";
 import "./GameBoard.css";
 
 const NODE_R = 10;
@@ -16,6 +17,8 @@ const allEdges = getAllEdges();
 export default function GameBoard({ config, onBackToMenu }) {
   const isAiMode = config.mode === "ai";
   const [hoveredEdge, setHoveredEdge] = useState(null);
+  const [edgeInput, setEdgeInput] = useState("");
+  const [inputError, setInputError] = useState("");
 
   const gameState = useGameState(config);
   const { aiThinking, handleAIResponse } = useAI(config, gameState);
@@ -99,6 +102,43 @@ export default function GameBoard({ config, onBackToMenu }) {
     ]
   );
 
+  const handleEdgeInputSubmit = useCallback(() => {
+    setInputError("");
+    // Accept "1 3", "1,3", "13", "1-3"
+    const normalized = edgeInput.trim().replace(/[\s,\-]+/, " ");
+    const digits = normalized.split(" ").filter(Boolean);
+    let a, b;
+    if (digits.length === 1 && digits[0].length === 2) {
+      a = parseInt(digits[0][0], 10);
+      b = parseInt(digits[0][1], 10);
+    } else if (digits.length === 2) {
+      a = parseInt(digits[0], 10);
+      b = parseInt(digits[1], 10);
+    } else {
+      setInputError("Enter two node numbers, e.g. 1 3");
+      return;
+    }
+
+    if (isNaN(a) || isNaN(b) || a < 1 || a > 6 || b < 1 || b > 6) {
+      setInputError("Nodes must be between 1 and 6");
+      return;
+    }
+    if (a === b) {
+      setInputError("Choose two different nodes");
+      return;
+    }
+
+    const edge = [a - 1, b - 1].sort((x, y) => x - y);
+
+    if (isEdgeTaken(edge)) {
+      setInputError(`Edge ${a}–${b} is already taken`);
+      return;
+    }
+
+    setEdgeInput("");
+    handleEdgeClick(edge);
+  }, [edgeInput, isEdgeTaken, handleEdgeClick]);
+
   function getTurnLabel() {
     if (aiThinking) return "AI is thinking...";
     if (isMyTurn) return "Your turn";
@@ -114,10 +154,7 @@ export default function GameBoard({ config, onBackToMenu }) {
   return (
     <div className="board-container">
       <nav className="board-nav">
-        <div className="board-nav-logo">
-          <img src="/transparent-logo.png" alt="Math Chaos" />
-          <span>Math Chaos</span>
-        </div>
+        <NavLogo className="board-nav-logo" onClick={onBackToMenu} />
         <button className="board-nav-back" onClick={onBackToMenu}>
           ← All Games
         </button>
@@ -126,14 +163,14 @@ export default function GameBoard({ config, onBackToMenu }) {
       <div className="board-body">
         <div className="board-game-area">
           {!gameOver && (
-            <div className="board-turn">
+            <div className="board-turn" aria-live="polite" aria-atomic="true">
               <div
                 className={`board-turn-dot board-turn-dot--${currentTurn}`}
               />
               <span className="board-turn-label">{getTurnLabel()}</span>
               {isMyTurn && (
                 <span style={{ color: "#B0A090", fontSize: "0.75rem" }}>
-                  — click any open line
+                  — click a line or type two node numbers
                 </span>
               )}
               {!isMyTurn && !aiThinking && (
@@ -154,6 +191,39 @@ export default function GameBoard({ config, onBackToMenu }) {
                 </span>
                 ). Force your opponent to close theirs.
               </span>
+            </div>
+          )}
+
+          {!gameOver && isMyTurn && (
+            <div className="board-keyboard-input">
+              <label className="board-keyboard-label">Enter nodes (1–6):</label>
+              <div className="board-keyboard-row">
+                <input
+                  className="board-keyboard-field"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={3}
+                  placeholder="e.g. 1 3"
+                  value={edgeInput}
+                  onChange={(e) => {
+                    setInputError("");
+                    setEdgeInput(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleEdgeInputSubmit();
+                  }}
+                  aria-label="Enter two node numbers to select an edge"
+                />
+                <button
+                  className="board-keyboard-submit"
+                  onClick={handleEdgeInputSubmit}
+                >
+                  Play
+                </button>
+              </div>
+              {inputError && (
+                <span className="board-keyboard-error">{inputError}</span>
+              )}
             </div>
           )}
 
@@ -235,7 +305,7 @@ export default function GameBoard({ config, onBackToMenu }) {
                     className="board-node-label"
                     style={{ fontSize: "9px" }}
                   >
-                    {i}
+                    {i + 1}
                   </text>
                 </g>
               ))}
@@ -292,24 +362,48 @@ export default function GameBoard({ config, onBackToMenu }) {
 
               <div className="board-math-concept">
                 <span className="board-math-concept-label">Math Concept</span>
-                <span className="board-math-concept-title">
-                  Ramsey Theory
-                </span>
+                <span className="board-math-concept-title">Ramsey Theory</span>
                 <p className="board-math-concept-body">
-                  SIM demonstrates Ramsey Theory, Ramsey Theory is a branch of mathematics. The <strong>Ramsey Number </strong> of R(3,3) = 6 is one of its most famous results.
-                  SIM demonstrates <strong>Ramsey Theory</strong> by demonstrating that in any
-                  two-coloring of the edges of a complete graph on 
+                  SIM demonstrates Ramsey Theory, Ramsey Theory is a branch of
+                  mathematics. The <strong>Ramsey Number </strong> of R(3,3) = 6
+                  is one of its most famous results. SIM demonstrates{" "}
+                  <strong>Ramsey Theory</strong> by demonstrating that in any
+                  two-coloring of the edges of a complete graph on
                   <strong>6 nodes (K₆)</strong>, a monochromatic triangle must
-                  exist. This means SIM <strong>always produces a winner</strong>. A tie is
-                  mathematically impossible.<br />
-
-                  References:<br />
-                  <a href="https://mathwithbaddrawings.com/2022/01/19/math-games-with-bad-drawings-2/" target="_blank" rel="noopener noreferrer"> <i>Math with Bad Drawings</i> book</a><br />
-
-                <a href="https://mathworld.wolfram.com/RamseyNumber.html"> List of known Ramsey Numbers</a>
-
-                  <a href="https://web.math.princeton.edu/~nalon/PDFS/listramsey6.pdf" target="_blank" rel="noopener noreferrer"> How to calculate Ramsey Numbers
-</a>
+                  exist. This means SIM{" "}
+                  <strong>always produces a winner</strong>. A tie is
+                  mathematically impossible.
+                  <br />
+                  References:
+                  <br />
+                  <a
+                    href="https://mathwithbaddrawings.com/2022/01/19/math-games-with-bad-drawings-2/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {" "}
+                    <i>
+                      <u>Math with Bad Drawings</u>
+                    </i>{" "}
+                    book
+                  </a>
+                  <br />
+                  <a href="https://mathworld.wolfram.com/RamseyNumber.html">
+                    {" "}
+                    <i>
+                      <u>List of known Ramsey Numbers</u>
+                    </i>
+                  </a>
+                  <a
+                    href="https://web.math.princeton.edu/~nalon/PDFS/listramsey6.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {" "}
+                    <i>
+                      <u>How to calculate Ramsey Numbers</u>
+                    </i>
+                  </a>
                 </p>
               </div>
             </div>

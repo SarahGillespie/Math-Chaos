@@ -301,3 +301,14 @@
   color: #8c7b6b;
   font-family: "Space Mono", monospace;
 }
+
+/* Logo as button (clickable) */
+button.home-nav-logo img { width: 56px; height: 56px; }
+button.home-nav-logo span {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1c1a17;
+  letter-spacing: -0.3px;
+}
+button.home-nav-logo:hover span { color: #c1440e; }

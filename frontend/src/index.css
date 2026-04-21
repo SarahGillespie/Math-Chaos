@@ -29,6 +29,17 @@
   margin: 0;
   padding: 0;
 }
+/* Visible focus ring for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #c1440e;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove default outline only when not keyboard navigating */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
 
 html,
 body,

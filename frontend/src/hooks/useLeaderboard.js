@@ -10,8 +10,8 @@ export function useLeaderboard() {
   const [sort, setSort] = useState("wins");
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedUsername, setSelectedUsername] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
   useEffect(() => {
     async function fetchPlayers() {
@@ -35,6 +35,22 @@ export function useLeaderboard() {
     fetchPlayers();
   }, [sort]);
 
+  useEffect(() => {
+    const username = localStorage.getItem("sim_username");
+    if (!username) return;
+
+    async function fetchCurrentPlayer() {
+      try {
+        const data = await playersAPI.getByUsername(username);
+        setCurrentPlayer(data.player ?? data);
+      } catch (err) {
+        console.error("Failed to fetch current player:", err);
+        setCurrentPlayer(null);
+      }
+    }
+    fetchCurrentPlayer();
+  }, []);
+
   const loadMore = useCallback(async () => {
     setLoadingMore(true);
     try {
@@ -52,36 +68,22 @@ export function useLeaderboard() {
     }
   }, [sort, page]);
 
-  const selectPlayer = useCallback((username) => {
-    setSelectedUsername((prev) => (prev === username ? null : username));
-  }, []);
+  const deleteOwnAccount = useCallback(async () => {
+    const currentUsername = localStorage.getItem("sim_username") || "";
+    if (!currentUsername) return;
 
-  const deleteSelected = useCallback(async () => {
-    if (!selectedUsername) return;
     setDeleting(true);
     try {
-      await playersAPI.delete(selectedUsername);
-      setPlayers((prev) => prev.filter((p) => p.username !== selectedUsername));
-      setTotalCount((prev) => prev - 1);
-
-      const currentUsername = localStorage.getItem("sim_username") || "";
-      const isDeletingSelf =
-        selectedUsername.toLowerCase() === currentUsername.toLowerCase();
-
-      if (isDeletingSelf) {
-        await authAPI.logout();
-        localStorage.removeItem("sim_username");
-        window.location.reload();
-        return;
-      }
-
-      setSelectedUsername(null);
+      await playersAPI.delete(currentUsername);
+      await authAPI.logout();
+      localStorage.removeItem("sim_username");
+      window.location.reload();
     } catch (err) {
-      console.error("Failed to delete player:", err);
+      console.error("Failed to delete account:", err);
     } finally {
       setDeleting(false);
     }
-  }, [selectedUsername]);
+  }, []);
 
   const hasMore = players.length < totalCount;
 
@@ -94,9 +96,8 @@ export function useLeaderboard() {
     totalCount,
     hasMore,
     loadMore,
-    selectedUsername,
-    selectPlayer,
-    deleteSelected,
     deleting,
+    currentPlayer,
+    deleteOwnAccount,
   };
 }

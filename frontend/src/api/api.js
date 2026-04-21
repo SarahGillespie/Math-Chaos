@@ -71,6 +71,12 @@ export const gamesAPI = {
       body: JSON.stringify(body),
     }),
 
+  requestAiMove: (id, aiColor) =>
+    request(`/api/games/${id}/ai-move`, {
+      method: "POST",
+      body: JSON.stringify({ aiColor }),
+    }),
+
   updateStatus: (id, body) =>
     request(`/api/games/${id}/status`, {
       method: "PATCH",
