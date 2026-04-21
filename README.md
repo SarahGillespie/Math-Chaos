@@ -7,7 +7,7 @@
 - **Deployed:** [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)
 - **GitHub:** [github.com/SarahGillespie/Math-Chaos](https://github.com/SarahGillespie/Math-Chaos)
 - **Slides:** [Google Slides](https://docs.google.com/presentation/d/1fb5l_20vnFCJvB0mr2t-4MXrW0g4kOnK0qdMG7BhKXE/edit?usp=sharing)
-- **Video Demonstration:** [Video](add!)
+- **Video Demonstration:** [Video](https://drive.google.com/file/d/1hOnwyZ_h1gnTw3uN_Vhep8P0pbTqb9b3/view?usp=share_link)
 
 ---
 
