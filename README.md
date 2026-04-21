@@ -23,15 +23,15 @@ Danielle: As a user, I want to learn game theory / math concepts by actively app
 
 ## Screenshots
 
-| View        | Screenshot                                       |
-| ----------- | ------------------------------------------------ |
-| Login       | ![Login](./screenshots/Login.png)                |
-| Home        | ![Home](./screenshots/Home.png)                  |
-| Leaderboard | ![Leaderboard](./screenshots/Leaderboard.png)    |
-| SIM Game    | ![SIM Game](./screenshots/SimGame.png)           |
-| Game Lobby  | ![Lobby](./screenshots/Lobby.png)                |
-| Finish      | ![Finish](./screenshots/Finish.png)              |
-| Finish      | ![Finish](./screenshots/Accessibility_Score.png) |
+| View                | Screenshot                                       |
+| ------------------- | ------------------------------------------------ |
+| Login               | ![Login](./screenshots/Login.png)                |
+| Home                | ![Home](./screenshots/Home.png)                  |
+| Leaderboard         | ![Leaderboard](./screenshots/Leaderboard.png)    |
+| SIM Game            | ![SIM Game](./screenshots/SimGame.png)           |
+| Game Lobby          | ![Lobby](./screenshots/Lobby.png)                |
+| Finish              | ![Finish](./screenshots/Finish.png)              |
+| Accessibility Score | ![Finish](./screenshots/Accessibility_Score.png) |
 
 ## Instructions to Build / Run
 
