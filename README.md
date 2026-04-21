@@ -113,7 +113,40 @@ MongoDB (hosted on MongoDB Atlas)
 
 ## Rubric Checklist
 
-(add!)
+| **Criteria**                                 | **Status**                                                                                                             |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| App accomplishes all approved requirements   | ✅ SIM game with AI mode, multiplayer, leaderboard, and auth                                                           |
+| App is usable and includes instructions      | ✅ In-app rules on GameMenu + this README                                                                              |
+| App is actually useful                       | ✅ Mathematical strategy game demonstrating Ramsey Theory                                                              |
+| ESLint config — no errors                    | ✅ `npm run lint` → 0 errors in both frontend and backend                                                              |
+| Code properly organized                      | ✅ `backend/routes/`, `backend/controllers/`, `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/utils/` |
+| At least 3 React components using hooks      | ✅ GameBoard, GameMenu, GameLobby, Leaderboard, Home, Auth (6 total)                                                   |
+| Each React component in its own file         | ✅ Each component in its own folder with matching CSS file                                                             |
+| Deployed on public server                    | ✅ [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)                                        |
+| 2+ Mongo collections with CRUD               | ✅ `games` + `players` + `users` — full CRUD on all                                                                    |
+| Database with 1,000+ records                 | ✅ `seed.js` generates 1,000 players + 1,000 games with pagination on leaderboard                                      |
+| Uses Node + Express                          | ✅ `backend/server.js` with Express + native `ws` WebSocket                                                            |
+| Formatted with Prettier                      | ✅ `npm run format` applied to both frontend and backend                                                               |
+| No non-standard tags for standard components | ✅ Proper `<button>`, `<input>`, `<nav>`, `<main>`, `<table>` throughout                                               |
+| CSS organized by components                  | ✅ Each component has its own `.css` file                                                                              |
+| Clear descriptive README                     | ✅ This file                                                                                                           |
+| No exposed credentials                       | ✅ `.env` gitignored, `.env.example` provided                                                                          |
+| package.json for backend and frontend        | ✅ [backend/package.json](./backend/package.json) + [frontend/package.json](./frontend/package.json)                   |
+| MIT License                                  | ✅ [LICENSE](./LICENSE)                                                                                                |
+| No leftover unused code                      | ✅ No default routes, no unused components, no leftover files                                                          |
+| Google Form submission correct               | ✅ Thumbnail + links verified                                                                                          |
+| Short narrated demo video                    | [Watch Here](add!)                                                                                                     |
+| Code frozen on time                          | ✅ 24 hours before class                                                                                               |
+| Defines PropTypes for every React component  | ✅ All components have PropTypes defined                                                                               |
+| Design hierarchy                             | ✅ Most important elements salient, top-left placement                                                                 |
+| Alignment and spacing                        | ✅ Consistent spacing throughout                                                                                       |
+| Consistent color palette                     | ✅ Warm linen palette — red for danger/cancel, dark for confirm                                                        |
+| Typography                                   | ✅ Space Mono + DM Sans via Google Fonts                                                                               |
+| Keyboard navigation                          | ✅ Full keyboard support — edge input field, tab order, focus ring                                                     |
+| Lighthouse/axe accessibility                 | ✅ 100/100 accessibility score on deployed site                                                                        |
+| Usability study — 3 participants per member  | ✅ 6 participants total — [View Report](./submissions/Usability_Study_Report__Math_Chaos.pdf)                          |
+| Semantic HTML                                | ✅ Proper `<nav>`, `<main>`, `<header>`, `<footer>` throughout                                                         |
+| No prohibited libraries                      | ✅ Native fetch, MongoDB driver, manual CORS, native ws                                                                |
 
 ## API Endpoints
 
