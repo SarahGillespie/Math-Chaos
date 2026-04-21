@@ -369,7 +369,7 @@ export default function GameBoard({ config, onBackToMenu }) {
                   is one of its most famous results. SIM demonstrates{" "}
                   <strong>Ramsey Theory</strong> by demonstrating that in any
                   two-coloring of the edges of a complete graph on
-                  <strong>6 nodes (K₆)</strong>, a monochromatic triangle must
+                  <strong> 6 nodes (K₆)</strong>, a monochromatic triangle must
                   exist. This means SIM{" "}
                   <strong>always produces a winner</strong>. A tie is
                   mathematically impossible.

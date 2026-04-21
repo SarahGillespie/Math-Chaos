@@ -102,7 +102,7 @@ export default function Home({
       {/* Hero */}
       <header className="home-hero">
         <p className="home-hero-eyebrow">
-          Inspired by Math Games with Bad Drawings - Ben Orlin
+          Inspired by Ben Orlin's Math Games with Bad Drawings
         </p>
         <h1>
           Play games.
