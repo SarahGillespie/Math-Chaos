@@ -136,7 +136,7 @@ MongoDB (hosted on MongoDB Atlas)
 | MIT License                                               | ✔ [LICENSE](./LICENSE)                                                                                                |
 | No leftover unused code                                   | ✔ No default routes, no unused components, no leftover files                                                          |
 | Google Form submission correct                            |  Thumbnail + links verified                                                                                          |
-| Short narrated demo video                                 | [Watch Here](add!)                                                                                                     |
+| Short narrated demo video                                 | [Watch Here](https://drive.google.com/file/d/1hOnwyZ_h1gnTw3uN_Vhep8P0pbTqb9b3/view?usp=share_link)                                                                                                     |
 | Code frozen on time                                       |  24 hours before class                                                                                               |
 | Defines PropTypes for every React component               |  All components have PropTypes defined                                                                               |
 | Design hierarchy                                          |  Most important elements salient, top-left placement                                                                 |
