@@ -3,7 +3,7 @@
 ## Author & Class Info
 
 - **Authors:** [Shashank More](https://shashankmore20.github.io/) & [Sarah Gillespie](https://sarahgillespie.github.io/sarah-gillespie-homepage/)
-- **Class:** CS5610 Web Development — Northeastern University
+- **Class:** CS5610 Web Development: Northeastern University
 - **Deployed:** [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)
 - **GitHub:** [github.com/SarahGillespie/Math-Chaos](https://github.com/SarahGillespie/Math-Chaos)
 - **Slides:** [Google Slides](https://docs.google.com/presentation/d/1fb5l_20vnFCJvB0mr2t-4MXrW0g4kOnK0qdMG7BhKXE/edit?usp=sharing)
@@ -77,14 +77,14 @@ cd ../frontend && npm install
 
 You'll need **two terminal tabs** running simultaneously.
 
-**Terminal 1 — Backend:**
+**Terminal 1: Backend:**
 
 ```bash
 cd backend
 npm run dev
 ```
 
-**Terminal 2 — Frontend:**
+**Terminal 2: Frontend:**
 
 ```bash
 cd frontend
@@ -119,12 +119,12 @@ MongoDB (hosted on MongoDB Atlas)
 | App accomplishes all approved requirements                | ✔ SIM game with AI mode, multiplayer, leaderboard, and auth                                                           |
 | App is usable and includes instructions                   | ✔ In-app rules on GameMenu + this README                                                                              |
 | App is actually useful                                    | ✔ Mathematical strategy game demonstrating Ramsey Theory                                                              |
-| ESLint config — no errors                                 | ✔ `npm run lint` → 0 errors in both frontend and backend                                                              |
+| ESLint config: no errors                                 | ✔ `npm run lint` → 0 errors in both frontend and backend                                                              |
 | Code properly organized                                   | ✔ `backend/routes/`, `backend/controllers/`, `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/utils/` |
 | At least 3 React components using hooks                   | ✔ GameBoard, GameMenu, GameLobby, Leaderboard, Home, Auth (6 total)                                                   |
 | Each React component in its own file                      | ✔ Each component in its own folder with matching CSS file                                                             |
 | Deployed on public server                                 | ✔ [math-chaos-frontend.onrender.com](https://math-chaos-frontend.onrender.com)                                        |
-| 2+ Mongo collections with CRUD                            | ✔ `games` + `players` + `users` — full CRUD on all                                                                    |
+| 2+ Mongo collections with CRUD                            | ✔ `games` + `players` + `users`: full CRUD on all                                                                    |
 | Database with 1,000+ records                              | ✔ `seed.js` generates 1,000 players + 1,000 games with pagination on leaderboard                                      |
 | Uses Node + Express                                       | ✔ `backend/server.js` with Express + native `ws` WebSocket                                                            |
 | Formatted with Prettier                                   | ✔ `npm run format` applied to both frontend and backend                                                               |
@@ -141,11 +141,11 @@ MongoDB (hosted on MongoDB Atlas)
 | Defines PropTypes for every React component               |  All components have PropTypes defined                                                                               |
 | Design hierarchy                                          |  Most important elements salient, top-left placement                                                                 |
 | Alignment and spacing                                     |  Consistent spacing throughout                                                                                       |
-| Consistent color palette                                  |  Warm linen palette — red for danger/cancel, dark for confirm                                                        |
+| Consistent color palette                                  |  Warm linen palette: red for danger/cancel, dark for confirm                                                        |
 | Typography                                                |  Space Mono + DM Sans via Google Fonts                                                                               |
-| Keyboard navigation                                       |  Full keyboard support — edge input field, tab order, focus ring                                                     |
+| Keyboard navigation                                       |  Full keyboard support: edge input field, tab order, focus ring                                                     |
 | Lighthouse/axe accessibility                              | ✔ 100/100 accessibility score on deployed site                                                                        |
-| Usability study — 3 participants per member               | ✔ 6 participants total: report available upon request for participant privacy purposes)
+| Usability study: 3 participants per member               | ✔ 6 participants total: report available upon request for participant privacy purposes)
               |
 | Semantic HTML                                             | ✔ Proper `<nav>`, `<main>`, `<header>`, `<footer>` throughout                                                         |
 | No prohibited libraries                                   | ✔ Native fetch, MongoDB driver, manual CORS, native ws                                                                |
